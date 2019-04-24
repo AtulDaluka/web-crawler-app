@@ -57,7 +57,7 @@ import six
 #Step 1. Import all the necessary packages. 
 import sklearn
 import string
-import nltk
+# import nltk
 from pprint import pprint
 import gensim
 import gensim.corpora as corpora
@@ -82,7 +82,7 @@ import warnings
 warnings.filterwarnings("ignore",category=DeprecationWarning)
 from gensim import corpora
 # import en_core_web_lg as en 
-from nltk.corpus import stopwords
+# from nltk.corpus import stopwords
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="C:\\Users\\a.daluka\\Documents\\Google_API\\Category_Classification-b7ddf209f440.json"
 import dash_auth
 import plotly
@@ -4786,332 +4786,332 @@ def text_crawl(value,n_clicks_1,n_clicks_2,contents,filename,website):
             # result.to_csv(file_name, sep=',', index = False, encoding='utf-8')
             # print ("Done! Please see the csv file")
 
-            dataset = result
-
-            nlp = en.load()
-
-            #Step 2: Download and Prepare Stopwords
-            #Prerequisites – Download nltk stopwords and spacy model
-            #We will need the stopwords from NLTK and spacy’s en model for text pre-processing. 
-            #Later, we will be using the spacy model for lemmatization.
-
-            #NLTK Stop words
-            stop_words = stopwords.words('english')
-            stop_words.extend(['from', 'subject', 're', 'edu', 'use','-', '--', '---', 'a', 'about', 'above', 'across', 
-                             'after', 'again', 'against', 'all', 'almost', 'alone', 'along', 'already', 'also', 'although', 
-                             'always', 'among', 'an', 'and', 'another', 'any', 'anybody', 'anyone', 'anything', 'anywhere', 
-                             'are', 'area', 'areas', 'around', 'as', 'ask', 'asked', 'asking', 'asks', 'at', 'away', 'b', 
-                             'back', 'backed', 'backing', 'backs', 'be', 'became', 'because', 'become', 'becomes', 'been', 
-                             'before', 'began', 'behind', 'being', 'beings', 'best', 'better', 'between', 'big', 'both', 
-                             'but', 'by', 'c', 'came', 'can', 'cannot', 'case', 'cases', 'certain', 'certainly', 'clear', 
-                             'clearly', 'come', 'could', 'd', 'did', 'differ', 'different', 'differently', 'do', 'does', 
-                             'done', 'down', 'down', 'downed', 'downing', 'downs', 'during', 'e', 'each', 'early', 'either', 
-                             'end', 'ended', 'ending', 'ends', 'enough', 'even', 'evenly', 'ever', 'every', 'everybody', 
-                             'everyone', 'everything', 'everywhere', 'f', 'face', 'faces', 'fact', 'facts', 'far', 'felt', 
-                             'few', 'find', 'finds', 'first', 'for', 'four', 'from', 'full', 'fully', 'further', 'furthered', 
-                             'furthering', 'furthers', 'g', 'gave', 'general', 'generally', 'get', 'gets', 'give', 'given', 
-                             'gives', 'go', 'going', 'good', 'goods', 'got', 'great', 'greater', 'greatest', 'group', 
-                             'grouped', 'grouping', 'groups', 'h', 'had', 'has', 'have', 'having', 'he', 'her', 'here', 
-                             'herself', 'high', 'high', 'high', 'higher', 'highest', 'him', 'himself', 'his', 'how', 
-                             'however', 'i', 'if', 'important', 'in', 'interest', 'interested', 'interesting', 'interests', 
-                             'into', 'is', 'it', 'its', 'itself', 'j', 'just', 'k', 'keep', 'keeps', 'kind', 'knew', 'know', 
-                             'known', 'knows', 'l', 'large', 'largely', 'last', 'later', 'latest', 'least', 'less', 'let',
-                             'lets', 'like', 'likely', 'long', 'longer', 'longest', 'm', 'made', 'make', 'making', 'man', 
-                             'many', 'may', 'me', 'member', 'members', 'men', 'might', 'more', 'most', 'mostly', 'mr', 'mrs', 
-                             'much', 'must', 'my', 'myself', 'n', 'necessary', 'need', 'needed', 'needing', 'needs', 'never', 
-                             'new', 'new', 'newer', 'newest', 'next', 'no', 'nobody', 'non', 'noone', 'not', 'nothing', 'now', 
-                             'nowhere', 'number', 'numbers', 'o', 'of', 'off', 'often', 'old', 'older', 'oldest', 'on', 'once',
-                             'one', 'only', 'open', 'opened', 'opening', 'opens', 'or', 'order', 'ordered', 'ordering', 
-                             'orders', 'other', 'others', 'our', 'out', 'over', 'p', 'part', 'parted', 'parting', 'parts',
-                             'per', 'perhaps', 'place', 'places', 'point', 'pointed', 'pointing', 'points', 'possible', 
-                             'present', 'presented', 'presenting', 'presents', 'problem', 'problems', 'put', 'puts', 'q', 
-                             'quite', 'r', 'rather', 'really', 'right', 'right', 'room', 'rooms', 's', 'said', 'same', 'saw',
-                             'say', 'says', 'second', 'seconds', 'see', 'seem', 'seemed', 'seeming', 'seems', 'sees', 'several',
-                             'shall', 'she', 'should', 'show', 'showed', 'showing', 'shows', 'side', 'sides', 'since', 'small', 
-                             'smaller', 'smallest', 'so', 'some', 'somebody', 'someone', 'something', 'somewhere', 'state',
-                             'states', 'still', 'still', 'such', 'sure', 't', 'take', 'taken', 'than', 'that', 'the', 'their',
-                             'them', 'then', 'there', 'therefore', 'these', 'they', 'thing', 'things', 'think', 'thinks', 
-                             'this', 'those', 'though', 'thought', 'thoughts', 'three', 'through', 'thus', 'to', 'today', 
-                             'together', 'too', 'took', 'toward', 'turn', 'turned', 'turning', 'turns', 'two', 'u', 'under', 
-                             'until', 'up', 'upon', 'us', 'use', 'used', 'uses', 'v', 'very', 'w', 'want', 'wanted', 'wanting', 
-                             'wants', 'was', 'way', 'ways', 'we', 'well', 'wells', 'went', 'were', 'what', 'when', 'where',
-                             'whether', 'which', 'while', 'who', 'whole', 'whose', 'why', 'will', 'with', 'within', 'without',
-                             'work', 'worked', 'working', 'works', 'would', 'x', 'y', 'year', 'years', 'yet', 'you', 'young', 
-                             'younger', 'youngest', 'your', 'yours', 'z', 'www', 'wwwe', 'com', 'inc', 's', 'uni', 'org'])
-
-            # Step3: Import the document containing scraped data, stored as "ReadText.csv"
-            #This is imported using pandas.read_csv and the resulting dataset has 2 columns as shown: Text and Website.
-
-            # dataset = pd.read_csv('Text_crawler_output.csv',encoding='utf-8')
-            dataset = dataset.replace(np.nan,'')
-
-            #Step 4. Remove emails and newline characters
-            #Let’s get rid of them using regular expressions.
-
-            # Convert to list
-            data = dataset["Cleaned Text"].values.tolist()
-
-            # Remove Emails
-            data = [re.sub('\S*@\S*\s?', '', sent) for sent in data]
-
-            # Remove new line characters
-            data = [re.sub('\s+', ' ', sent) for sent in data]
-
-            # Remove distracting single quotes
-            data = [re.sub("\'", "", sent) for sent in data]
-
-            #Remove words with less than 3 letters.
-            data = [re.sub(r'\W*\b\w{1,3}\b', '', sent) for sent in data]
-
-            dataWeb = dataset.Website.tolist()
-
-            #Step 5: Tokenize words and Clean-up text
-            #Let’s tokenize each sentence into a list of words, removing punctuations and unnecessary characters altogether.
-            #Gensim’s simple_preprocess() is great for this. Additionally I have set deacc=True to remove the punctuations.
-
-            def sent_to_words(sentences):
-              for sentence in sentences:
-                  yield(gensim.utils.simple_preprocess(str(sentence), deacc=True))  # deacc=True removes punctuations
-
-            data_words = list(sent_to_words(data))
-
-            #Step 6: Creating Bigram and Trigram Models
-            #Bigrams are two words frequently occurring together in the document. Trigrams are 3 words frequently occurring.
-            #Some examples in our example are: ‘front_bumper’, ‘oil_leak’, ‘maryland_college_park’ etc.
-
-            #Gensim’s Phrases model can build and implement the bigrams, trigrams, quadgrams and more. 
-            #The two important arguments to Phrases are min_count and threshold. 
-            #The higher the values of these parameters, the harder it is for words to be combined to bigrams.
-
-            # Build the bigram and trigram models
-            bigram = gensim.models.Phrases(data_words, min_count=5, threshold=100) # higher threshold fewer phrases.
-            trigram = gensim.models.Phrases(bigram[data_words], threshold=100)  
-
-            # Faster way to get a sentence clubbed as a trigram/bigram
-            bigram_mod = gensim.models.phrases.Phraser(bigram)
-            trigram_mod = gensim.models.phrases.Phraser(trigram)
+#             dataset = result
+
+#             nlp = en.load()
+
+#             #Step 2: Download and Prepare Stopwords
+#             #Prerequisites – Download nltk stopwords and spacy model
+#             #We will need the stopwords from NLTK and spacy’s en model for text pre-processing. 
+#             #Later, we will be using the spacy model for lemmatization.
+
+#             #NLTK Stop words
+#             stop_words = stopwords.words('english')
+#             stop_words.extend(['from', 'subject', 're', 'edu', 'use','-', '--', '---', 'a', 'about', 'above', 'across', 
+#                              'after', 'again', 'against', 'all', 'almost', 'alone', 'along', 'already', 'also', 'although', 
+#                              'always', 'among', 'an', 'and', 'another', 'any', 'anybody', 'anyone', 'anything', 'anywhere', 
+#                              'are', 'area', 'areas', 'around', 'as', 'ask', 'asked', 'asking', 'asks', 'at', 'away', 'b', 
+#                              'back', 'backed', 'backing', 'backs', 'be', 'became', 'because', 'become', 'becomes', 'been', 
+#                              'before', 'began', 'behind', 'being', 'beings', 'best', 'better', 'between', 'big', 'both', 
+#                              'but', 'by', 'c', 'came', 'can', 'cannot', 'case', 'cases', 'certain', 'certainly', 'clear', 
+#                              'clearly', 'come', 'could', 'd', 'did', 'differ', 'different', 'differently', 'do', 'does', 
+#                              'done', 'down', 'down', 'downed', 'downing', 'downs', 'during', 'e', 'each', 'early', 'either', 
+#                              'end', 'ended', 'ending', 'ends', 'enough', 'even', 'evenly', 'ever', 'every', 'everybody', 
+#                              'everyone', 'everything', 'everywhere', 'f', 'face', 'faces', 'fact', 'facts', 'far', 'felt', 
+#                              'few', 'find', 'finds', 'first', 'for', 'four', 'from', 'full', 'fully', 'further', 'furthered', 
+#                              'furthering', 'furthers', 'g', 'gave', 'general', 'generally', 'get', 'gets', 'give', 'given', 
+#                              'gives', 'go', 'going', 'good', 'goods', 'got', 'great', 'greater', 'greatest', 'group', 
+#                              'grouped', 'grouping', 'groups', 'h', 'had', 'has', 'have', 'having', 'he', 'her', 'here', 
+#                              'herself', 'high', 'high', 'high', 'higher', 'highest', 'him', 'himself', 'his', 'how', 
+#                              'however', 'i', 'if', 'important', 'in', 'interest', 'interested', 'interesting', 'interests', 
+#                              'into', 'is', 'it', 'its', 'itself', 'j', 'just', 'k', 'keep', 'keeps', 'kind', 'knew', 'know', 
+#                              'known', 'knows', 'l', 'large', 'largely', 'last', 'later', 'latest', 'least', 'less', 'let',
+#                              'lets', 'like', 'likely', 'long', 'longer', 'longest', 'm', 'made', 'make', 'making', 'man', 
+#                              'many', 'may', 'me', 'member', 'members', 'men', 'might', 'more', 'most', 'mostly', 'mr', 'mrs', 
+#                              'much', 'must', 'my', 'myself', 'n', 'necessary', 'need', 'needed', 'needing', 'needs', 'never', 
+#                              'new', 'new', 'newer', 'newest', 'next', 'no', 'nobody', 'non', 'noone', 'not', 'nothing', 'now', 
+#                              'nowhere', 'number', 'numbers', 'o', 'of', 'off', 'often', 'old', 'older', 'oldest', 'on', 'once',
+#                              'one', 'only', 'open', 'opened', 'opening', 'opens', 'or', 'order', 'ordered', 'ordering', 
+#                              'orders', 'other', 'others', 'our', 'out', 'over', 'p', 'part', 'parted', 'parting', 'parts',
+#                              'per', 'perhaps', 'place', 'places', 'point', 'pointed', 'pointing', 'points', 'possible', 
+#                              'present', 'presented', 'presenting', 'presents', 'problem', 'problems', 'put', 'puts', 'q', 
+#                              'quite', 'r', 'rather', 'really', 'right', 'right', 'room', 'rooms', 's', 'said', 'same', 'saw',
+#                              'say', 'says', 'second', 'seconds', 'see', 'seem', 'seemed', 'seeming', 'seems', 'sees', 'several',
+#                              'shall', 'she', 'should', 'show', 'showed', 'showing', 'shows', 'side', 'sides', 'since', 'small', 
+#                              'smaller', 'smallest', 'so', 'some', 'somebody', 'someone', 'something', 'somewhere', 'state',
+#                              'states', 'still', 'still', 'such', 'sure', 't', 'take', 'taken', 'than', 'that', 'the', 'their',
+#                              'them', 'then', 'there', 'therefore', 'these', 'they', 'thing', 'things', 'think', 'thinks', 
+#                              'this', 'those', 'though', 'thought', 'thoughts', 'three', 'through', 'thus', 'to', 'today', 
+#                              'together', 'too', 'took', 'toward', 'turn', 'turned', 'turning', 'turns', 'two', 'u', 'under', 
+#                              'until', 'up', 'upon', 'us', 'use', 'used', 'uses', 'v', 'very', 'w', 'want', 'wanted', 'wanting', 
+#                              'wants', 'was', 'way', 'ways', 'we', 'well', 'wells', 'went', 'were', 'what', 'when', 'where',
+#                              'whether', 'which', 'while', 'who', 'whole', 'whose', 'why', 'will', 'with', 'within', 'without',
+#                              'work', 'worked', 'working', 'works', 'would', 'x', 'y', 'year', 'years', 'yet', 'you', 'young', 
+#                              'younger', 'youngest', 'your', 'yours', 'z', 'www', 'wwwe', 'com', 'inc', 's', 'uni', 'org'])
+
+#             # Step3: Import the document containing scraped data, stored as "ReadText.csv"
+#             #This is imported using pandas.read_csv and the resulting dataset has 2 columns as shown: Text and Website.
+
+#             # dataset = pd.read_csv('Text_crawler_output.csv',encoding='utf-8')
+#             dataset = dataset.replace(np.nan,'')
+
+#             #Step 4. Remove emails and newline characters
+#             #Let’s get rid of them using regular expressions.
+
+#             # Convert to list
+#             data = dataset["Cleaned Text"].values.tolist()
+
+#             # Remove Emails
+#             data = [re.sub('\S*@\S*\s?', '', sent) for sent in data]
+
+#             # Remove new line characters
+#             data = [re.sub('\s+', ' ', sent) for sent in data]
+
+#             # Remove distracting single quotes
+#             data = [re.sub("\'", "", sent) for sent in data]
+
+#             #Remove words with less than 3 letters.
+#             data = [re.sub(r'\W*\b\w{1,3}\b', '', sent) for sent in data]
+
+#             dataWeb = dataset.Website.tolist()
+
+#             #Step 5: Tokenize words and Clean-up text
+#             #Let’s tokenize each sentence into a list of words, removing punctuations and unnecessary characters altogether.
+#             #Gensim’s simple_preprocess() is great for this. Additionally I have set deacc=True to remove the punctuations.
+
+#             def sent_to_words(sentences):
+#               for sentence in sentences:
+#                   yield(gensim.utils.simple_preprocess(str(sentence), deacc=True))  # deacc=True removes punctuations
+
+#             data_words = list(sent_to_words(data))
+
+#             #Step 6: Creating Bigram and Trigram Models
+#             #Bigrams are two words frequently occurring together in the document. Trigrams are 3 words frequently occurring.
+#             #Some examples in our example are: ‘front_bumper’, ‘oil_leak’, ‘maryland_college_park’ etc.
+
+#             #Gensim’s Phrases model can build and implement the bigrams, trigrams, quadgrams and more. 
+#             #The two important arguments to Phrases are min_count and threshold. 
+#             #The higher the values of these parameters, the harder it is for words to be combined to bigrams.
+
+#             # Build the bigram and trigram models
+#             bigram = gensim.models.Phrases(data_words, min_count=5, threshold=100) # higher threshold fewer phrases.
+#             trigram = gensim.models.Phrases(bigram[data_words], threshold=100)  
+
+#             # Faster way to get a sentence clubbed as a trigram/bigram
+#             bigram_mod = gensim.models.phrases.Phraser(bigram)
+#             trigram_mod = gensim.models.phrases.Phraser(trigram)
 
-            # See trigram example
-            print(trigram_mod[bigram_mod[data_words[0]]])
+#             # See trigram example
+#             print(trigram_mod[bigram_mod[data_words[0]]])
 
-            # See trigram example
-            print(trigram_mod[bigram_mod[data_words[2]]])
+#             # See trigram example
+#             print(trigram_mod[bigram_mod[data_words[2]]])
 
-            #Step 7: Remove Stopwords, Make Bigrams and Lemmatize
-            #The bigrams model is ready. 
-            #We now need to define the functions to remove the stopwords, make bigrams and lemmatization and call them sequentially.
+#             #Step 7: Remove Stopwords, Make Bigrams and Lemmatize
+#             #The bigrams model is ready. 
+#             #We now need to define the functions to remove the stopwords, make bigrams and lemmatization and call them sequentially.
 
-            # Define functions for stopwords, bigrams, trigrams and lemmatization
-            def remove_stopwords(texts):
-              return [[word for word in simple_preprocess(str(doc)) if word not in stop_words] for doc in texts]
+#             # Define functions for stopwords, bigrams, trigrams and lemmatization
+#             def remove_stopwords(texts):
+#               return [[word for word in simple_preprocess(str(doc)) if word not in stop_words] for doc in texts]
 
-            def make_bigrams(texts):
-              return [bigram_mod[doc] for doc in texts]
+#             def make_bigrams(texts):
+#               return [bigram_mod[doc] for doc in texts]
 
-            def make_trigrams(texts):
-              return [trigram_mod[bigram_mod[doc]] for doc in texts]
+#             def make_trigrams(texts):
+#               return [trigram_mod[bigram_mod[doc]] for doc in texts]
 
-            def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
-              """https://spacy.io/api/annotation"""
-              texts_out = []
-              for sent in texts:
-                  doc = nlp(" ".join(sent)) 
-                  texts_out.append([token.lemma_ for token in doc if token.pos_ in allowed_postags])
-              return texts_out
+#             def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
+#               """https://spacy.io/api/annotation"""
+#               texts_out = []
+#               for sent in texts:
+#                   doc = nlp(" ".join(sent)) 
+#                   texts_out.append([token.lemma_ for token in doc if token.pos_ in allowed_postags])
+#               return texts_out
 
-            #Let's call the functions in order:
-            # Remove Stop Words
-            data_words_nostops = remove_stopwords(data_words)
+#             #Let's call the functions in order:
+#             # Remove Stop Words
+#             data_words_nostops = remove_stopwords(data_words)
 
-            # Form Bigrams
-            data_words_bigrams = make_bigrams(data_words_nostops)
-
-            # Do lemmatization keeping only noun, adj, vb, adv
-            data_lemmatized = lemmatization(data_words_bigrams, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV'])
-
-            print(data_lemmatized[:1])
+#             # Form Bigrams
+#             data_words_bigrams = make_bigrams(data_words_nostops)
+
+#             # Do lemmatization keeping only noun, adj, vb, adv
+#             data_lemmatized = lemmatization(data_words_bigrams, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV'])
+
+#             print(data_lemmatized[:1])
 
-            #Step 8: Create the Dictionary and Corpus needed for Topic Modeling
-            #The two main inputs to the LDA topic model are the dictionary(id2word) and the corpus. We'll now create them.
+#             #Step 8: Create the Dictionary and Corpus needed for Topic Modeling
+#             #The two main inputs to the LDA topic model are the dictionary(id2word) and the corpus. We'll now create them.
 
-            # Create Dictionary
-            id2word = corpora.Dictionary(data_lemmatized)
-
-            # Create Corpus
-            texts = data_lemmatized
-
-            # Term Document Frequency
-            corpus = [id2word.doc2bow(text) for text in texts]
-
-            # # View
-            # print(corpus[:1])
-
-            # Or, you can see a human-readable form of the corpus itself. Human readable format of corpus (term-frequency)
-            print([[(id2word[id], freq) for id, freq in cp] for cp in corpus[:1]])
-
-            # Build LDA model
-            lda_model = gensim.models.ldamodel.LdaModel(corpus=corpus,
-                                                     id2word=id2word,
-                                                     num_topics=10, 
-                                                     random_state=100,
-                                                     update_every=1,
-                                                     chunksize=100,
-                                                     passes=10,
-                                                     alpha='auto',
-                                                     per_word_topics=True)
-
-            pprint(lda_model.print_topics())
-            doc_lda = lda_model[corpus]
-
-            #Step 10: Compute Model Perplexity and Coherence Score
-            #Model perplexity and topic coherence provide a convenient way to measure how good a given topic model is. 
-            #Topic coherence score, in particular, is more helpful.
-
-            # Compute Perplexity
-            print('\nPerplexity: ', lda_model.log_perplexity(corpus))  # a measure of how good the model is. lower the better.
-
-            # Compute Coherence Score
-            coherence_model_lda = CoherenceModel(model=lda_model, texts=data_lemmatized, dictionary=id2word, coherence='c_v')
-            coherence_lda = coherence_model_lda.get_coherence()
-            print('\nCoherence Score: ', coherence_lda)
-
-            #Step 11: Visualize the topics-keywords
-            #Now that the LDA model is built, the next step is to examine the produced topics and the associated keywords. 
-            #We can do that with pyLDAvis package’s interactive chart which is designed to work well with jupyter notebooks.
-
-            # Visualize the topics
-            vis = pyLDAvis.gensim.prepare(lda_model, corpus, id2word)
-
-            pyLDAvis.save_html(vis, 'sample_output.html')
-
-            os.environ['MALLET_HOME'] = 'C:\\Users\\a.daluka\\Documents\\topicM\\mallet-2.0.8'
-
-            #Step 12: Let's improve the coherence score by building Mallet model. 
-            #Mallet’s version, however, often gives a better quality of topics.
-
-            # Download File: http://mallet.cs.umass.edu/dist/mallet-2.0.8.zip
-            # /Users/aiperiiusupova/Desktop/LEADGEN_ML_CLASSIFICATION/LEADGEN_TOPICMODELING_2/mallet-2.0.8/bin/mallet
-            mallet_path ='C:\\Users\\a.daluka\\Documents\\topicM\\mallet-2.0.8\\bin\\mallet'  
-            # C:\Users\arunima.prakash\Desktop\mallet-2.0.8\bin
-            ldamallet = gensim.models.wrappers.LdaMallet(mallet_path, corpus=corpus, num_topics=10, id2word=id2word)
-
-            # Step 13: Now, show topics
-            pprint(ldamallet.show_topics(formatted=False))
-
-            # Compute Coherence Score
-            coherence_model_ldamallet = CoherenceModel(model=ldamallet, texts=data_lemmatized, dictionary=id2word, coherence='c_v')
-            coherence_ldamallet = coherence_model_ldamallet.get_coherence()
-            print('\nCoherence Score: ', coherence_ldamallet)
-
-            def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3):
-            # """
-            # Compute c_v coherence for various number of topics
-
-            # Parameters:
-            # ----------
-            # dictionary : Gensim dictionary
-            # corpus : Gensim corpus
-            # texts : List of input texts
-            # limit : Max num of topics
-
-            # Returns:
-            # -------
-            # model_list : List of LDA topic models
-            # coherence_values : Coherence values corresponding to the LDA model with respective number of topics
-            # """
-              coherence_values = []
-              model_list = []
-              for num_topics in range(start, limit, step):
-                  model = gensim.models.wrappers.LdaMallet(mallet_path, corpus=corpus, num_topics=num_topics, id2word=id2word)
-                  model_list.append(model)
-                  coherencemodel = CoherenceModel(model=model, texts=texts, dictionary=dictionary, coherence='c_v')
-                  coherence_values.append(coherencemodel.get_coherence())
-
-              return model_list, coherence_values
-
-            # Step 14: This can take a long time to run.
-            model_list, coherence_values = compute_coherence_values(dictionary=id2word, corpus=corpus, texts=data_lemmatized, start=2, limit=40, step=6)
-
-              # Step 15: Show graph
-            limit=40
-            start=2
-            step=6
-            x = range(start, limit, step)
-            # plt.plot(x, coherence_values)
-            # plt.xlabel("Num Topics")
-            # plt.ylabel("Coherence score")
-            # plt.legend(("coherence_values"), loc='best')
-            # plt.show()
-
-            # Step 16: Print the coherence scores
-            cv_array = []
-            for m, cv in zip(x, coherence_values):
-              print("Num Topics =", m, " has Coherence Value of", round(cv, 6))
-              cv_array.append(round(cv,6))
-
-            max_index = cv_array.index(max(cv_array))
-            print(max_index)
-            # Step 17: Select the model and print the topics
-            optimal_model = model_list[max_index]
-            model_topics = optimal_model.show_topics(formatted=False)
-            pprint(optimal_model.print_topics(num_words=15))
-
-            def format_topics_sentences(ldamodel=lda_model, corpus=corpus, texts=data, dataWeb = dataWeb):
-              # Init output
-              sent_topics_dataset = pd.DataFrame()
-
-              # Get main topic in each document
-              for i, row in enumerate(ldamodel[corpus]):
-                  row = sorted(row, key=lambda x: (x[1]), reverse=True)
-                  # Get the Dominant topic, Perc Contribution and Keywords for each document
-                  for j, (topic_num, prop_topic) in enumerate(row):
-                      if j == 0:  # => dominant topic
-                          wp = ldamodel.show_topic(topic_num)
-                          topic_keywords = ", ".join([word for word, prop in wp])
-                          sent_topics_dataset = sent_topics_dataset.append(pd.Series([int(topic_num), round(prop_topic,4), topic_keywords]), ignore_index=True)
-                      else:
-                          break
-              sent_topics_dataset.columns = ['Dominant Topic', 'Perc_Contribution', 'Topic_Keywords']
-
-              # Add original text to the end of the output
-              contentsText = pd.Series(texts)
-              contentsWebsite = pd.Series(dataWeb)
-              sent_topics_dataset = pd.concat([sent_topics_dataset, contentsText, contentsWebsite], axis=1)
-              return(sent_topics_dataset)
-
-
-            dataset_topic_sents_keywords = format_topics_sentences(ldamodel=optimal_model, corpus=corpus, texts=data, dataWeb = dataWeb)
-
-            # Format
-            dataset_dominant_topic = dataset_topic_sents_keywords.reset_index(drop = True)
-            dataset_dominant_topic.columns = ['Dominant Topic', 'Topic Perc Contrib', 'Keywords', 'Text', 'Website']
-
-            # # Show
-            # dataset_dominant_topic.head(1500)
-            dataset_dominant_topic = dataset_dominant_topic[['Website', 'Text', 'Dominant Topic', 'Topic Perc Contrib', 'Keywords']]
-
-            #Step 18: Get the output from the above table. 
-            #dataset_dominant_topic.to_csv("output_excel_file.csv", index=False,encoding='utf8')
-
-            dataset_dominant_topic = dataset_dominant_topic.drop(['Text'], axis=1)
-
-            result_fin = pd.merge(dataset,dataset_dominant_topic,on='Website',how='left')
-
-            result_fin.to_csv("output_excel_file_sample_output_03292019.csv", index=False)
-
-            result_fin = result_fin.apply(topic_archetype,axis=1)
-
-            result_fin['Automated Archetype'] = result_fin.apply(auto_archetype,axis=1)
-
-            # result_fin.to_csv("final_archetyping_output_file.csv", index=False)
-
-            result_fin.to_csv("final_archetyping_output_file_03292019.csv", index=False)
-
-            csv_string = result_fin.to_csv(index=False, encoding='utf-8')
+#             # Create Dictionary
+#             id2word = corpora.Dictionary(data_lemmatized)
+
+#             # Create Corpus
+#             texts = data_lemmatized
+
+#             # Term Document Frequency
+#             corpus = [id2word.doc2bow(text) for text in texts]
+
+#             # # View
+#             # print(corpus[:1])
+
+#             # Or, you can see a human-readable form of the corpus itself. Human readable format of corpus (term-frequency)
+#             print([[(id2word[id], freq) for id, freq in cp] for cp in corpus[:1]])
+
+#             # Build LDA model
+#             lda_model = gensim.models.ldamodel.LdaModel(corpus=corpus,
+#                                                      id2word=id2word,
+#                                                      num_topics=10, 
+#                                                      random_state=100,
+#                                                      update_every=1,
+#                                                      chunksize=100,
+#                                                      passes=10,
+#                                                      alpha='auto',
+#                                                      per_word_topics=True)
+
+#             pprint(lda_model.print_topics())
+#             doc_lda = lda_model[corpus]
+
+#             #Step 10: Compute Model Perplexity and Coherence Score
+#             #Model perplexity and topic coherence provide a convenient way to measure how good a given topic model is. 
+#             #Topic coherence score, in particular, is more helpful.
+
+#             # Compute Perplexity
+#             print('\nPerplexity: ', lda_model.log_perplexity(corpus))  # a measure of how good the model is. lower the better.
+
+#             # Compute Coherence Score
+#             coherence_model_lda = CoherenceModel(model=lda_model, texts=data_lemmatized, dictionary=id2word, coherence='c_v')
+#             coherence_lda = coherence_model_lda.get_coherence()
+#             print('\nCoherence Score: ', coherence_lda)
+
+#             #Step 11: Visualize the topics-keywords
+#             #Now that the LDA model is built, the next step is to examine the produced topics and the associated keywords. 
+#             #We can do that with pyLDAvis package’s interactive chart which is designed to work well with jupyter notebooks.
+
+#             # Visualize the topics
+#             vis = pyLDAvis.gensim.prepare(lda_model, corpus, id2word)
+
+#             pyLDAvis.save_html(vis, 'sample_output.html')
+
+#             os.environ['MALLET_HOME'] = 'C:\\Users\\a.daluka\\Documents\\topicM\\mallet-2.0.8'
+
+#             #Step 12: Let's improve the coherence score by building Mallet model. 
+#             #Mallet’s version, however, often gives a better quality of topics.
+
+#             # Download File: http://mallet.cs.umass.edu/dist/mallet-2.0.8.zip
+#             # /Users/aiperiiusupova/Desktop/LEADGEN_ML_CLASSIFICATION/LEADGEN_TOPICMODELING_2/mallet-2.0.8/bin/mallet
+#             mallet_path ='C:\\Users\\a.daluka\\Documents\\topicM\\mallet-2.0.8\\bin\\mallet'  
+#             # C:\Users\arunima.prakash\Desktop\mallet-2.0.8\bin
+#             ldamallet = gensim.models.wrappers.LdaMallet(mallet_path, corpus=corpus, num_topics=10, id2word=id2word)
+
+#             # Step 13: Now, show topics
+#             pprint(ldamallet.show_topics(formatted=False))
+
+#             # Compute Coherence Score
+#             coherence_model_ldamallet = CoherenceModel(model=ldamallet, texts=data_lemmatized, dictionary=id2word, coherence='c_v')
+#             coherence_ldamallet = coherence_model_ldamallet.get_coherence()
+#             print('\nCoherence Score: ', coherence_ldamallet)
+
+#             def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3):
+#             # """
+#             # Compute c_v coherence for various number of topics
+
+#             # Parameters:
+#             # ----------
+#             # dictionary : Gensim dictionary
+#             # corpus : Gensim corpus
+#             # texts : List of input texts
+#             # limit : Max num of topics
+
+#             # Returns:
+#             # -------
+#             # model_list : List of LDA topic models
+#             # coherence_values : Coherence values corresponding to the LDA model with respective number of topics
+#             # """
+#               coherence_values = []
+#               model_list = []
+#               for num_topics in range(start, limit, step):
+#                   model = gensim.models.wrappers.LdaMallet(mallet_path, corpus=corpus, num_topics=num_topics, id2word=id2word)
+#                   model_list.append(model)
+#                   coherencemodel = CoherenceModel(model=model, texts=texts, dictionary=dictionary, coherence='c_v')
+#                   coherence_values.append(coherencemodel.get_coherence())
+
+#               return model_list, coherence_values
+
+#             # Step 14: This can take a long time to run.
+#             model_list, coherence_values = compute_coherence_values(dictionary=id2word, corpus=corpus, texts=data_lemmatized, start=2, limit=40, step=6)
+
+#               # Step 15: Show graph
+#             limit=40
+#             start=2
+#             step=6
+#             x = range(start, limit, step)
+#             # plt.plot(x, coherence_values)
+#             # plt.xlabel("Num Topics")
+#             # plt.ylabel("Coherence score")
+#             # plt.legend(("coherence_values"), loc='best')
+#             # plt.show()
+
+#             # Step 16: Print the coherence scores
+#             cv_array = []
+#             for m, cv in zip(x, coherence_values):
+#               print("Num Topics =", m, " has Coherence Value of", round(cv, 6))
+#               cv_array.append(round(cv,6))
+
+#             max_index = cv_array.index(max(cv_array))
+#             print(max_index)
+#             # Step 17: Select the model and print the topics
+#             optimal_model = model_list[max_index]
+#             model_topics = optimal_model.show_topics(formatted=False)
+#             pprint(optimal_model.print_topics(num_words=15))
+
+#             def format_topics_sentences(ldamodel=lda_model, corpus=corpus, texts=data, dataWeb = dataWeb):
+#               # Init output
+#               sent_topics_dataset = pd.DataFrame()
+
+#               # Get main topic in each document
+#               for i, row in enumerate(ldamodel[corpus]):
+#                   row = sorted(row, key=lambda x: (x[1]), reverse=True)
+#                   # Get the Dominant topic, Perc Contribution and Keywords for each document
+#                   for j, (topic_num, prop_topic) in enumerate(row):
+#                       if j == 0:  # => dominant topic
+#                           wp = ldamodel.show_topic(topic_num)
+#                           topic_keywords = ", ".join([word for word, prop in wp])
+#                           sent_topics_dataset = sent_topics_dataset.append(pd.Series([int(topic_num), round(prop_topic,4), topic_keywords]), ignore_index=True)
+#                       else:
+#                           break
+#               sent_topics_dataset.columns = ['Dominant Topic', 'Perc_Contribution', 'Topic_Keywords']
+
+#               # Add original text to the end of the output
+#               contentsText = pd.Series(texts)
+#               contentsWebsite = pd.Series(dataWeb)
+#               sent_topics_dataset = pd.concat([sent_topics_dataset, contentsText, contentsWebsite], axis=1)
+#               return(sent_topics_dataset)
+
+
+#             dataset_topic_sents_keywords = format_topics_sentences(ldamodel=optimal_model, corpus=corpus, texts=data, dataWeb = dataWeb)
+
+#             # Format
+#             dataset_dominant_topic = dataset_topic_sents_keywords.reset_index(drop = True)
+#             dataset_dominant_topic.columns = ['Dominant Topic', 'Topic Perc Contrib', 'Keywords', 'Text', 'Website']
+
+#             # # Show
+#             # dataset_dominant_topic.head(1500)
+#             dataset_dominant_topic = dataset_dominant_topic[['Website', 'Text', 'Dominant Topic', 'Topic Perc Contrib', 'Keywords']]
+
+#             #Step 18: Get the output from the above table. 
+#             #dataset_dominant_topic.to_csv("output_excel_file.csv", index=False,encoding='utf8')
+
+#             dataset_dominant_topic = dataset_dominant_topic.drop(['Text'], axis=1)
+
+#             result_fin = pd.merge(dataset,dataset_dominant_topic,on='Website',how='left')
+
+#             result_fin.to_csv("output_excel_file_sample_output_03292019.csv", index=False)
+
+#             result_fin = result_fin.apply(topic_archetype,axis=1)
+
+#             result_fin['Automated Archetype'] = result_fin.apply(auto_archetype,axis=1)
+
+#             # result_fin.to_csv("final_archetyping_output_file.csv", index=False)
+
+#             result_fin.to_csv("final_archetyping_output_file_03292019.csv", index=False)
+
+            csv_string = result.to_csv(index=False, encoding='utf-8')
             csv_string = "data:text/csv;charset=utf-8," + urllib.parse.quote(csv_string)
-
-            if result_fin.empty:
-                return html.Div([dt.DataTable(data=[{}],columns=[{'id': c, 'name': c} for c in result_fin.columns],
+            result_fin = result
+            if result.empty:
+                return html.Div([dt.DataTable(data=[{}],columns=[{'id': c, 'name': c} for c in result.columns],
                     style_as_list_view=True,
                     style_header={'backgroundColor': 'rgb(30, 30, 30)','color':'white'},
                         style_table={
@@ -5128,7 +5128,7 @@ def text_crawl(value,n_clicks_1,n_clicks_2,contents,filename,website):
                     'if': {'column_id': 'Website'},
                     'textAlign': 'left'
                     }
-                    ])],id='datatable-6'),html.Div([dt.DataTable(data=[{}],columns=[{'id': c, 'name': c} for c in result_fin.columns],
+                    ])],id='datatable-6'),html.Div([dt.DataTable(data=[{}],columns=[{'id': c, 'name': c} for c in result.columns],
                     style_as_list_view=True,
                     style_header={'backgroundColor': 'rgb(30, 30, 30)','color':'white'},
                     style_table={
@@ -5145,7 +5145,7 @@ def text_crawl(value,n_clicks_1,n_clicks_2,contents,filename,website):
                     'if': {'column_id': 'Website'},
                     'textAlign': 'left'
                     }
-                    ])],id='datatable-7'),html.Div([dt.DataTable(data=[{}],columns=[{'id': c, 'name': c} for c in result_fin.columns],
+                    ])],id='datatable-7'),html.Div([dt.DataTable(data=[{}],columns=[{'id': c, 'name': c} for c in result.columns],
                     style_as_list_view=True,
                     style_header={'backgroundColor': 'rgb(30, 30, 30)','color':'white'},
                     style_table={
@@ -5186,7 +5186,7 @@ def text_crawl(value,n_clicks_1,n_clicks_2,contents,filename,website):
                     'if': {'column_id': 'Website'},
                     'textAlign': 'left'
                     }
-                    ])]),html.Div([dt.DataTable(data=dataset_dominant_topic.to_dict('rows'),id = 'datatable-7',columns=[{'id': c, 'name': c} for c in dataset_dominant_topic.columns],
+                    ])]),html.Div([dt.DataTable(data=result.to_dict('rows'),id = 'datatable-7',columns=[{'id': c, 'name': c} for c in result.columns],
                     style_as_list_view=True,
                     style_header={'backgroundColor': 'rgb(30, 30, 30)','color':'white'},
                     style_table={
@@ -5203,7 +5203,7 @@ def text_crawl(value,n_clicks_1,n_clicks_2,contents,filename,website):
                     'if': {'column_id': 'Website'},
                     'textAlign': 'left'
                     }
-                    ])]),html.Div([dt.DataTable(data=result_fin.to_dict('rows'),id = 'datatable-8',columns=[{'id': c, 'name': c} for c in result_fin.columns],
+                    ])]),html.Div([dt.DataTable(data=result.to_dict('rows'),id = 'datatable-8',columns=[{'id': c, 'name': c} for c in result.columns],
                     style_as_list_view=True,
                     style_header={'backgroundColor': 'rgb(30, 30, 30)','color':'white'},
                     style_table={
