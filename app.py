@@ -60,7 +60,6 @@ from keras.preprocessing import image as image_utils
 from keras.applications.imagenet_utils import decode_predictions
 from keras.applications.imagenet_utils import preprocess_input
 from keras.applications import VGG16
-import cv2
 import warnings
 import plotly
 import datetime
