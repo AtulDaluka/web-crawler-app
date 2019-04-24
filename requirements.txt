@@ -141,10 +141,7 @@ PyHamcrest==1.9.0
 pyLDAvis==2.1.2
 pyorbital==1.5.0
 pyparsing==2.2.0
-PyQt5==5.11.2
-PyQt5-sip==4.19.12
 pyreadline==2.1
-pyspark==2.4.0
 pytest==4.0.0
 python-dateutil==2.7.3
 python-magic==0.4.15
