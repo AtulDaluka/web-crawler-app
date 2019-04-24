@@ -67,7 +67,7 @@ import spacy
 # Plotting tools
 import pyLDAvis
 import pyLDAvis.gensim  # don't skip this
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 from keras.preprocessing import image as image_utils
 from keras.applications.imagenet_utils import decode_predictions
@@ -86,7 +86,7 @@ from nltk.corpus import stopwords
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="C:\\Users\\a.daluka\\Documents\\Google_API\\Category_Classification-b7ddf209f440.json"
 import dash_auth
 import plotly
-from matplotlib.pyplot import specgram
+# from matplotlib.pyplot import specgram
 # import keras
 # from keras.preprocessing import sequence
 # from keras.models import Sequential
