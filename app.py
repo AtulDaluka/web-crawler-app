@@ -114,7 +114,7 @@ import plotly.graph_objs as go
 login_success = 0
 
 # Setup app
-app = dash.Dash(__name__,sharing=True)
+app = dash.Dash(__name__)
 
 server = app.server
 
@@ -5766,4 +5766,4 @@ app.css.append_css({
     "external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 if __name__ == '__main__':
-    app.server.run(debug=False, threaded= True, host='0.0.0.0', port = 8080)
+    app.server.run()
