@@ -115,8 +115,8 @@ login_success = 0
 
 # Setup app
 app = dash.Dash(__name__)
-
 server = app.server
+server.secret_key = os.environ.get('secret_key', 'secret')
 
 external_css = ["https://fonts.googleapis.com/css?family=Overpass:300,300i",
                 "https://cdn.rawgit.com/plotly/dash-app-stylesheets/dab6f937fd5548cebf4c6dc7e93a10ac438f5efb/dash-technical-charting.css"]
